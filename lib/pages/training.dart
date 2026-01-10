@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_guide/pages/chest_page.dart';
 import 'package:gym_guide/pages/full_body_page.dart';
 import 'package:gym_guide/pages/login.dart';
 import 'package:gym_guide/pages/diet_page.dart';
@@ -84,7 +85,7 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => LoginPage(),
+                      builder: (_) => const ChestWorkoutPage(),
                     ),
                   );
                 },

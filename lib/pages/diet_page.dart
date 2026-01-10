@@ -137,7 +137,9 @@ class _DietPageState extends State<DietPage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           'Diet Plan',
           style: TextStyle(fontWeight: FontWeight.bold),
