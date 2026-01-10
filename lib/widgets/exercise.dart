@@ -9,13 +9,13 @@ class ExerciseCard extends StatefulWidget {
   final int timerSeconds;
 
   const ExerciseCard({
-    Key? key,
+    super.key,
     required this.exerciseName,
     required this.gifPath,
     required this.previewImagePath,
     required this.roundsInfo,
     required this.timerSeconds,
-  }) : super(key: key);
+  });
 
   @override
   State<ExerciseCard> createState() => _ExerciseCardState();

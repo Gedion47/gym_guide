@@ -42,6 +42,7 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
     final List<Widget> tabPages = [
       // ================= TRAINING TAB =================
       Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
             'Gym Guide',
@@ -106,13 +107,13 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
         ),
       ),
 
-      // ================= PROGRESS TAB =================
+      // PROGRESS TAB
       ProgressPage(),
 
-      // ================= DIET TAB =================
+      // DIET TAB
       DietPage(),
 
-      // ================= PROFILE TAB =================
+      // PROFILE TAB
       ProfilePage(),
     ];
 
@@ -123,6 +124,7 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
         children: tabPages,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) {
           _tabController.animateTo(index);
