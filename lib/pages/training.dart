@@ -52,7 +52,7 @@ class _TrainingPageState extends State<TrainingPage> {
               onTap: () => {},
               child: CircleAvatar(
                 radius: 20,
-                backgroundImage: AssetImage('assets/images/profile.png'), // User image
+                backgroundImage: AssetImage('assets/images/profile.png'),
                 backgroundColor: Colors.grey[300], // Fallback if no image
               ),
             ),
@@ -60,113 +60,9 @@ class _TrainingPageState extends State<TrainingPage> {
         ],
         centerTitle: false,
         backgroundColor: Colors.white,
-        //elevation: 2,
         foregroundColor: Colors.black,
       ),
 
-      // body: Padding(
-      //   padding: const EdgeInsets.all(30.0),
-      //   child: Column(
-      //     children: [
-      //       Expanded(
-      //         child: ListView(
-      //           children: [
-      //             Container(
-      //               width: double.infinity,
-      //               height: 100,
-      //               decoration: BoxDecoration(
-      //                 color: Colors.white,
-      //                 borderRadius: BorderRadius.circular(10),
-      //                 border: Border.all(
-      //                   color: Colors.grey,
-      //                   width: 2,
-      //                 ),
-      //                 boxShadow: [
-      //                   BoxShadow(
-      //                     color: Colors.grey.withOpacity(0.3),
-      //                     spreadRadius: 0,
-      //                     blurRadius: 8,
-      //                     offset: Offset(4, 4), // Right and bottom shadow
-      //                   ),
-      //                 ],
-      //               ),
-      //               child: Stack(
-      //                 children: [
-      //                   Row(
-      //                     children: [
-      //                       Padding(
-      //                         padding: EdgeInsets.all(16.0),
-      //                         child: Column(
-      //                           crossAxisAlignment: CrossAxisAlignment.start,
-      //                           children: [
-      //                             Container(
-      //                               width: 64,
-      //                               height: 64,
-      //                               decoration: BoxDecoration(
-      //                                 borderRadius: BorderRadius.circular(10),
-      //                                 image: DecorationImage(
-      //                                   image: AssetImage("assets/images/full_body.png"),
-      //                                   fit: BoxFit.cover,
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                           ],
-      //                         ),
-      //                       ),
-      //                       Expanded(
-      //                         child: Padding(
-      //                           padding: EdgeInsets.symmetric(horizontal: 0, vertical: 20),
-      //                           child: Column(
-      //                             crossAxisAlignment: CrossAxisAlignment.start,
-      //                             children: [
-      //                               Text(
-      //                                 'Full Body Workout',
-      //                                 style: TextStyle(
-      //                                   fontSize: 20,
-      //                                   fontWeight: FontWeight.bold,
-      //                                   color: Colors.black,
-      //                                 ),
-      //                               ),
-      //                               Text(
-      //                                 '3 exercises',
-      //                                 style: TextStyle(
-      //                                   fontSize: 15,
-      //                                   color: Colors.grey,
-      //                                 ),
-      //                               ),
-      //                             ],
-      //                           ),
-      //                         ),
-      //                       ),
-      //                       Padding(
-      //                         padding: EdgeInsets.all(20),
-      //                         child: Row(
-      //                           children: [
-      //                             Container(
-      //                               width: 30,
-      //                               height: 30,
-      //                               decoration: BoxDecoration(
-      //                                 borderRadius: BorderRadius.circular(50),
-      //                                 image: DecorationImage(
-      //                                   image: AssetImage("assets/images/arrow.png"),
-      //                                   fit: BoxFit.cover,
-      //                                 ),
-      //                               ),
-      //                             ),
-      //                           ],
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                 ],
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
