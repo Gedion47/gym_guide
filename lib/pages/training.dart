@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gym_guide/pages/full_body_page.dart';
 import 'package:gym_guide/pages/login.dart';
 import 'package:gym_guide/pages/diet_page.dart';
+import 'package:gym_guide/pages/profile_page.dart';
+import 'package:gym_guide/pages/progress_page.dart';
 import 'package:gym_guide/widgets/workout_card.dart';
 
 class TrainingPage extends StatefulWidget {
@@ -105,33 +107,13 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
       ),
 
       // ================= PROGRESS TAB =================
-      Scaffold(
-        appBar: AppBar(
-          title: const Text('Progress'),
-        ),
-        body: const Center(
-          child: Text(
-            'Progress Page Coming Soon',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-      ),
+      ProgressPage(),
 
       // ================= DIET TAB =================
-      DietPage(), // DietPage should have its own Scaffold + AppBar
+      DietPage(),
 
       // ================= PROFILE TAB =================
-      Scaffold(
-        appBar: AppBar(
-          title: const Text('Profile'),
-        ),
-        body: const Center(
-          child: Text(
-            'Profile Page Coming Soon',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-      ),
+      ProfilePage(),
     ];
 
     return Scaffold(

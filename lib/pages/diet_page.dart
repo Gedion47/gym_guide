@@ -5,7 +5,10 @@ class DietPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Diet Plan'),
+        title: Text(
+          'Diet Plan',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Text('Diet Page Content'),

@@ -5,7 +5,10 @@ class ProgressPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Progress'),
+        title: Text(
+          'Progress',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Text('Progress Page Content'),
