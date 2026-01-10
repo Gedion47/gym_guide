@@ -33,6 +33,47 @@ class _FullBodyWorkoutPageState extends State<FullBodyWorkoutPage> {
     },
   ];
 
+  // Track completed exercises
+  List<bool> completedExercises = [
+    false,
+    false,
+    false
+  ];
+  int completedCount = 0;
+
+  void _onExerciseComplete(int index) {
+    if (!mounted) return;
+
+    setState(() {
+      if (!completedExercises[index]) {
+        completedExercises[index] = true;
+        completedCount++;
+
+        // Notify progress page through shared preferences or provider in real app
+        // For now, we'll just update the UI
+      }
+    });
+
+    // Show completion message when all exercises are done
+    if (completedCount == exercises.length) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Workout Complete!'),
+            content: Text('All ${exercises.length} exercises completed. Progress updated.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +122,7 @@ class _FullBodyWorkoutPageState extends State<FullBodyWorkoutPage> {
               previewImagePath: e['preview'],
               roundsInfo: e['info'],
               timerSeconds: e['time'],
+              workoutType: 'full_body',
             );
           },
         ),

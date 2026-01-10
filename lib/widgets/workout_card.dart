@@ -1,4 +1,3 @@
-// lib/widgets/workout_card.dart
 import 'package:flutter/material.dart';
 
 class WorkoutCard extends StatelessWidget {
@@ -13,6 +12,7 @@ class WorkoutCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String? routeName;
   final Object? arguments;
+  final bool isLocked;
 
   const WorkoutCard({
     super.key,
@@ -27,6 +27,7 @@ class WorkoutCard extends StatelessWidget {
     this.onTap,
     this.routeName,
     this.arguments,
+    this.isLocked = false,
   });
 
   void _handleTap(BuildContext context) {
@@ -66,13 +67,13 @@ class WorkoutCard extends StatelessWidget {
         ],
       ),
       child: Material(
-        color: Colors.white,
+        color: isLocked ? Colors.grey.shade100 : Colors.white,
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
-          onTap: () => _handleTap(context),
+          onTap: isLocked ? null : () => _handleTap(context),
           borderRadius: BorderRadius.circular(20),
-          splashColor: Colors.grey.withOpacity(0.3),
-          highlightColor: Colors.grey.withOpacity(0.1),
+          splashColor: isLocked ? Colors.transparent : Colors.grey.withOpacity(0.3),
+          highlightColor: isLocked ? Colors.transparent : Colors.grey.withOpacity(0.1),
           child: Row(
             children: [
               // Image container on left
@@ -101,10 +102,10 @@ class WorkoutCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: isLocked ? Colors.grey.shade600 : Colors.black,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -114,7 +115,7 @@ class WorkoutCard extends StatelessWidget {
                         subtitle,
                         style: TextStyle(
                           fontSize: 15,
-                          color: Colors.grey[600],
+                          color: isLocked ? Colors.grey.shade500 : Colors.grey[600],
                         ),
                       ),
                     ],
@@ -122,20 +123,34 @@ class WorkoutCard extends StatelessWidget {
                 ),
               ),
 
-              // Arrow icon on right
+              // Lock icon or Arrow icon on right
               Padding(
                 padding: const EdgeInsets.all(15),
-                child: Container(
-                  width: 25,
-                  height: 25,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/arrow.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+                child: isLocked
+                    ? Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.lock,
+                          color: Colors.grey.shade600,
+                          size: 16,
+                        ),
+                      )
+                    : Container(
+                        width: 25,
+                        height: 25,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/arrow.png"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

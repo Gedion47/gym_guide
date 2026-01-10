@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/diet_card.dart';
+import '../services/data_service.dart';
 
 class DietPage extends StatefulWidget {
   const DietPage({super.key});
@@ -9,20 +10,39 @@ class DietPage extends StatefulWidget {
 }
 
 class _DietPageState extends State<DietPage> {
-  // Track which diets are selected individually
   bool _absSelected = false;
   bool _aerobicsSelected = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    // load selections from DataService
+    final absSelected = await DataService.loadDietSelection(DataService.absDietKey);
+    final aerobicsSelected = await DataService.loadDietSelection(DataService.aerobicsDietKey);
+
+    if (mounted) {
+      setState(() {
+        _absSelected = absSelected;
+        _aerobicsSelected = aerobicsSelected;
+        _isLoading = false;
+      });
+    }
+  }
 
   void _showAddDietDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Add Diet Plan"),
+          title: const Text("Add Diet Plan"),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                // Show Abs option only if not already selected
                 if (!_absSelected)
                   ListTile(
                     leading: Container(
@@ -30,21 +50,18 @@ class _DietPageState extends State<DietPage> {
                       height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/abs.png'),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/chest.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    title: Text("Abs Workout"),
+                    title: const Text("Chest Workout"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      setState(() {
-                        _absSelected = true;
-                      });
+                      _addAbsDiet();
                     },
                   ),
-                // Show Aerobics option only if not already selected
                 if (!_aerobicsSelected)
                   ListTile(
                     leading: Container(
@@ -52,24 +69,21 @@ class _DietPageState extends State<DietPage> {
                       height: 40,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/aerobics.png'),
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/full_body.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    title: Text("Aerobics Workout"),
+                    title: const Text("Full Body Workout"),
                     onTap: () {
                       Navigator.of(context).pop();
-                      setState(() {
-                        _aerobicsSelected = true;
-                      });
+                      _addAerobicsDiet();
                     },
                   ),
-                // If all diets are already selected, show message
                 if (_absSelected && _aerobicsSelected)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "All diet plans have been added",
                       style: TextStyle(color: Colors.grey),
@@ -80,7 +94,7 @@ class _DietPageState extends State<DietPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -91,28 +105,61 @@ class _DietPageState extends State<DietPage> {
     );
   }
 
-  void _removeAbsDiet() {
+  Future<void> _addAbsDiet() async {
+    setState(() {
+      _absSelected = true;
+    });
+
+    await DataService.saveDietSelection(DataService.absDietKey, true);
+  }
+
+  Future<void> _addAerobicsDiet() async {
+    setState(() {
+      _aerobicsSelected = true;
+    });
+
+    await DataService.saveDietSelection(DataService.aerobicsDietKey, true);
+  }
+
+  Future<void> _removeAbsDiet() async {
     setState(() {
       _absSelected = false;
     });
+
+    await DataService.saveDietSelection(DataService.absDietKey, false);
   }
 
-  void _removeAerobicsDiet() {
+  Future<void> _removeAerobicsDiet() async {
     setState(() {
       _aerobicsSelected = false;
     });
+
+    await DataService.saveDietSelection(DataService.aerobicsDietKey, false);
   }
 
   @override
   Widget build(BuildContext context) {
-    // Build list of selected diet cards
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Diet Plan',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final List<Widget> dietCards = [];
 
     if (_absSelected) {
       dietCards.add(
         DietCard(
-          imagePath: "assets/images/abs.png",
-          exType: "Abs Workout",
+          imagePath: "assets/images/chest.png",
+          exType: "Chest Workout",
           general: "• Protein every meal (muscle repair)\n• Complex carbs before/after training \n• Healthy fats daily (hormones + joints)\n• Hydration: 2–3 liters/day",
           breakfast: "• Scrambled eggs (2-3)\n• Oats or bread\n• Fruit (banana or apple)\n• Optional: milk or yogurt",
           lunch: "• Rice / pasta / injera\n• Chicken / lentils / meat / fish\n• Vegetables (salad, cooked cabbage, spinach)",
@@ -125,8 +172,8 @@ class _DietPageState extends State<DietPage> {
     if (_aerobicsSelected) {
       dietCards.add(
         DietCard(
-          imagePath: "assets/images/aerobics.png",
-          exType: "Aerobics Workout",
+          imagePath: "assets/images/full_body.png",
+          exType: "Full Body Workout",
           general: "• Protein every meal (muscle repair)\n• Complex carbs before/after training \n• Healthy fats daily (hormones + joints)\n• Hydration: 2–3 liters/day",
           breakfast: "• Scrambled eggs (2-3)\n• Oats or bread\n• Fruit (banana or apple)\n• Optional: milk or yogurt",
           lunch: "• Rice / pasta / injera\n• Chicken / lentils / meat / fish\n• Vegetables (salad, cooked cabbage, spinach)",
@@ -140,7 +187,7 @@ class _DietPageState extends State<DietPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           'Diet Plan',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -151,20 +198,18 @@ class _DietPageState extends State<DietPage> {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton.icon(
               onPressed: _showAddDietDialog,
-              icon: Icon(Icons.add),
-              label: Text('Add Diet Plan'),
+              icon: const Icon(Icons.add),
+              label: const Text('Add Diet Plan'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
           ),
-
-          // Content Area
           Expanded(
             child: dietCards.isNotEmpty
                 ? ListView(children: dietCards)
@@ -172,12 +217,8 @@ class _DietPageState extends State<DietPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.restaurant_menu,
-                          size: 80,
-                          color: Colors.grey[300],
-                        ),
-                        SizedBox(height: 20),
+                        Icon(Icons.restaurant_menu, size: 80, color: Colors.grey[300]),
+                        const SizedBox(height: 20),
                         Text(
                           "No Diet Plan Selected",
                           style: TextStyle(
@@ -186,7 +227,7 @@ class _DietPageState extends State<DietPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
                           "Tap 'Add Diet Plan' to get started",
                           style: TextStyle(

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:gym_guide/pages/chest_page.dart';
 import 'package:gym_guide/pages/full_body_page.dart';
 import 'package:gym_guide/pages/login.dart';
 import 'package:gym_guide/pages/diet_page.dart';
 import 'package:gym_guide/pages/profile_page.dart';
 import 'package:gym_guide/pages/progress_page.dart';
+import 'package:gym_guide/pages/abs_page.dart';
 import 'package:gym_guide/widgets/workout_card.dart';
+import 'package:gym_guide/services/premium_service.dart';
+import 'package:gym_guide/services/auth_provider.dart';
 
 class TrainingPage extends StatefulWidget {
   const TrainingPage({super.key});
@@ -40,6 +44,9 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final user = authProvider.currentUser;
+
     final List<Widget> tabPages = [
       // ================= TRAINING TAB =================
       Scaffold(
@@ -51,11 +58,11 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
           ),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
-          actions: const [
+          actions: [
             Padding(
-              padding: EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.only(right: 16),
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/profile.png'),
+                backgroundImage: user?.photoURL != null ? NetworkImage(user!.photoURL!) : const AssetImage('assets/images/profile.png') as ImageProvider,
               ),
             ),
           ],
@@ -94,12 +101,30 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
                 imagePath: 'assets/images/back.png',
                 title: 'Back Workout',
                 subtitle: '3 exercises',
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => LoginPage(),
-                    ),
+                onTap: () {},
+              ),
+
+              // Locked Abs Workout Card
+              FutureBuilder<bool>(
+                future: PremiumService.isPremiumUnlocked(),
+                builder: (context, snapshot) {
+                  final isPremiumUnlocked = snapshot.data ?? false;
+
+                  return WorkoutCard(
+                    imagePath: 'assets/images/abs.png',
+                    title: 'Abs Workout',
+                    subtitle: '4 exercises',
+                    isLocked: !isPremiumUnlocked,
+                    onTap: isPremiumUnlocked
+                        ? () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const AbsWorkoutPage(),
+                              ),
+                            );
+                          }
+                        : null,
                   );
                 },
               ),
@@ -109,13 +134,13 @@ class _TrainingPageState extends State<TrainingPage> with SingleTickerProviderSt
       ),
 
       // PROGRESS TAB
-      ProgressPage(),
+      const ProgressPage(),
 
       // DIET TAB
-      DietPage(),
+      const DietPage(),
 
       // PROFILE TAB
-      ProfilePage(),
+      const ProfilePage(),
     ];
 
     return Scaffold(

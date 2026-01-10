@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../services/progress_tracker.dart';
 
 class ExerciseCard extends StatefulWidget {
   final String exerciseName;
@@ -7,6 +8,7 @@ class ExerciseCard extends StatefulWidget {
   final String previewImagePath;
   final String roundsInfo;
   final int timerSeconds;
+  final String workoutType;
 
   const ExerciseCard({
     super.key,
@@ -15,6 +17,7 @@ class ExerciseCard extends StatefulWidget {
     required this.previewImagePath,
     required this.roundsInfo,
     required this.timerSeconds,
+    required this.workoutType,
   });
 
   @override
@@ -26,40 +29,49 @@ class _ExerciseCardState extends State<ExerciseCard> {
   int _secondsRemaining = 0;
   bool _isRunning = false;
   bool _playGif = false;
+  bool _hasCompleted = false;
+  late ProgressTracker _progressTracker;
 
   @override
   void initState() {
     super.initState();
     _secondsRemaining = widget.timerSeconds;
+    _progressTracker = ProgressTracker();
   }
 
   void _startTimer() {
-    if (_isRunning) return;
+    if (_isRunning || _hasCompleted) return;
 
     setState(() {
       _isRunning = true;
       _secondsRemaining = widget.timerSeconds;
-      _playGif = true; // GIF starts on start button
+      _playGif = true;
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       if (!mounted) return;
 
-      setState(() {
-        if (_secondsRemaining > 0) {
-          _secondsRemaining--;
-        } else {
-          _stopTimer();
-        }
-      });
-    });
-  }
+      if (_secondsRemaining > 0) {
+        setState(() => _secondsRemaining--);
+      } else {
+        _timer?.cancel();
+        _hasCompleted = true;
 
-  void _stopTimer() {
-    _timer?.cancel();
-    setState(() {
-      _isRunning = false;
-      _playGif = false; // GIF stops when timer ends
+        // Await the async increment
+        await _progressTracker.incrementProgress(widget.workoutType);
+
+        setState(() {
+          _isRunning = false;
+          _playGif = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${widget.exerciseName} completed! Progress updated.'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     });
   }
 
@@ -100,7 +112,6 @@ class _ExerciseCardState extends State<ExerciseCard> {
                   height: 250,
                   width: 250,
                   fit: BoxFit.contain,
-                  cacheWidth: 300, // keeps memory safe and avoids crashing
                 ),
               ),
               const SizedBox(height: 8),
@@ -114,15 +125,15 @@ class _ExerciseCardState extends State<ExerciseCard> {
                   Expanded(
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1877F2),
+                        backgroundColor: _hasCompleted ? Colors.grey : const Color(0xFF1877F2),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                         minimumSize: const Size.fromHeight(40),
                       ),
-                      onPressed: _startTimer,
-                      child: const Text(
-                        'Start',
+                      onPressed: _hasCompleted ? null : _startTimer,
+                      child: Text(
+                        _hasCompleted ? 'Completed' : 'Start',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
