@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gym_guide/pages/chest_page.dart';
 import 'package:gym_guide/pages/full_body_page.dart';
-import 'package:gym_guide/pages/login.dart';
 import 'package:gym_guide/pages/diet_page.dart';
 import 'package:gym_guide/pages/profile_page.dart';
 import 'package:gym_guide/pages/progress_page.dart';

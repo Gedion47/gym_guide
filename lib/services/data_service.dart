@@ -2,19 +2,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gym_guide/services/firebase_service.dart';
 
 class DataService {
-  // -------- WORKOUT SELECTION KEYS --------
+  // workout selection keys
   static const String fullBodyKey = 'full_body_selected';
   static const String chestKey = 'chest_selected';
 
-  // -------- DIET SELECTION KEYS --------
+  // diet selection keys
   static const String absDietKey = 'abs_selected';
   static const String aerobicsDietKey = 'aerobics_selected';
 
-  // -------- WORKOUT PROGRESS KEYS --------
+  // workout progress keys
   static const String fullBodyProgressKey = 'full_body_progress';
   static const String chestProgressKey = 'chest_progress';
 
-  // -------- CALENDAR & MIDNIGHT --------
+  // calendar and midnight keys
   static const String completedDatesKey = 'completed_dates';
   static const String lastActiveDateKey = 'last_active_date';
 
@@ -24,7 +24,7 @@ class DataService {
     return userId != null ? '${userId}_$baseKey' : baseKey;
   }
 
-  // ---------------- WORKOUT SELECTION ----------------
+  // workout selection
   static Future<void> saveWorkoutSelection(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_getUserKey(key), value);
@@ -35,7 +35,7 @@ class DataService {
     return prefs.getBool(_getUserKey(key)) ?? false;
   }
 
-  // ---------------- DIET SELECTION ----------------
+  // diet selection
   static Future<void> saveDietSelection(String key, bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_getUserKey(key), value);
@@ -46,7 +46,7 @@ class DataService {
     return prefs.getBool(_getUserKey(key)) ?? false;
   }
 
-  // ---------------- WORKOUT PROGRESS ----------------
+  // workout progress
   static Future<void> saveWorkoutProgress(String key, Map<String, int> progress) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_getUserKey('${key}_completed'), progress['completed'] ?? 0);
@@ -61,7 +61,7 @@ class DataService {
     };
   }
 
-  // ---------------- CALENDAR ----------------
+  // calendar
   static Future<void> saveCompletedDates(List<DateTime> dates) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList(
@@ -76,7 +76,7 @@ class DataService {
     return list.map(DateTime.parse).toList();
   }
 
-  // ---------------- MIDNIGHT RESET ----------------
+  // midnight reset
   static Future<void> saveLastActiveDate(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_getUserKey(lastActiveDateKey), date.toIso8601String());

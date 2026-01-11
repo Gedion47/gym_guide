@@ -8,7 +8,7 @@ class ProgressTracker extends ChangeNotifier {
   ProgressTracker._internal();
 
   // In-memory cache for progress
-  Map<String, int> _progressCache = {};
+  final Map<String, int> _progressCache = {};
 
   /// Increment progress for a workout type
   Future<void> incrementProgress(String workoutType) async {

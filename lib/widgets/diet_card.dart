@@ -10,7 +10,7 @@ class DietCard extends StatefulWidget {
   final VoidCallback? onRemove;
 
   const DietCard({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.exType,
     required this.general,
@@ -18,14 +18,14 @@ class DietCard extends StatefulWidget {
     required this.lunch,
     required this.dinner,
     this.onRemove,
-  }) : super(key: key);
+  });
 
   @override
   _DietCardState createState() => _DietCardState();
 }
 
 class _DietCardState extends State<DietCard> {
-  bool _showOptions = false;
+  final bool _showOptions = false;
 
   @override
   Widget build(BuildContext context) {

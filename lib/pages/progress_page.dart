@@ -14,7 +14,7 @@ class ProgressPage extends StatefulWidget {
 class _ProgressPageState extends State<ProgressPage> {
   bool _fullBodySelected = false;
   bool _chestSelected = false;
-  Map<String, Map<String, int>> _progressData = {};
+  final Map<String, Map<String, int>> _progressData = {};
   List<DateTime> _completedDates = [];
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
