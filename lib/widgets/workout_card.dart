@@ -116,6 +116,7 @@ class WorkoutCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 15,
                           color: isLocked ? Colors.grey.shade500 : Colors.grey[600],
+                          height: 1.2,
                         ),
                       ),
                     ],
