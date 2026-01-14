@@ -436,10 +436,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showCreditCardDialog(BuildContext context) {
-    final _cardNumberController = TextEditingController();
-    final _expiryController = TextEditingController();
-    final _cvvController = TextEditingController();
-    final _nameController = TextEditingController();
+    final cardNumberController = TextEditingController();
+    final expiryController = TextEditingController();
+    final cvvController = TextEditingController();
+    final nameController = TextEditingController();
 
     showDialog(
       context: context,
@@ -473,7 +473,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 5),
                 TextField(
-                  controller: _nameController,
+                  controller: nameController,
                   decoration: InputDecoration(
                     hintText: 'John Doe',
                     border: OutlineInputBorder(
@@ -491,7 +491,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 5),
                 TextField(
-                  controller: _cardNumberController,
+                  controller: cardNumberController,
                   decoration: InputDecoration(
                     hintText: '1234 5678 9012 3456',
                     border: OutlineInputBorder(
@@ -517,7 +517,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(height: 5),
                           TextField(
-                            controller: _expiryController,
+                            controller: expiryController,
                             decoration: InputDecoration(
                               hintText: 'MM/YY',
                               border: OutlineInputBorder(
@@ -543,7 +543,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(height: 5),
                           TextField(
-                            controller: _cvvController,
+                            controller: cvvController,
                             decoration: InputDecoration(
                               hintText: '123',
                               border: OutlineInputBorder(
