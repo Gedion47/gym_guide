@@ -50,7 +50,12 @@ class AuthProvider extends ChangeNotifier {
       // Update user display name
       await userCredential.user?.updateDisplayName(name);
 
-      _currentUser = userCredential.user;
+      // Reload the user to get updated profile information
+      await userCredential.user?.reload();
+
+      // Get the updated user object
+      _currentUser = _auth.currentUser;
+      notifyListeners(); // Make sure to notify listeners of the update
 
       if (context != null) {
         _showSuccessSnackBar(context, 'Account created successfully!');
@@ -91,7 +96,13 @@ class AuthProvider extends ChangeNotifier {
         password: password,
       );
 
-      _currentUser = userCredential.user;
+      // Reload the user to get updated profile information
+      await userCredential.user?.reload();
+
+      // Get the updated user object
+      _currentUser = _auth.currentUser;
+      notifyListeners();
+
       return _currentUser;
     } on FirebaseAuthException catch (e) {
       _setError(_getFirebaseErrorMessage(e));
@@ -198,7 +209,11 @@ class AuthProvider extends ChangeNotifier {
 
       final UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-      _currentUser = userCredential.user;
+      // Reload the user to get updated profile information
+      await userCredential.user?.reload();
+
+      // Get the updated user object
+      _currentUser = _auth.currentUser;
       notifyListeners();
 
       return _currentUser;
