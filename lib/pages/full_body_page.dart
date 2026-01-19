@@ -48,9 +48,6 @@ class _FullBodyWorkoutPageState extends State<FullBodyWorkoutPage> {
       if (!completedExercises[index]) {
         completedExercises[index] = true;
         completedCount++;
-
-        // Notify progress page through shared preferences or provider in real app
-        // For now, we'll just update the UI
       }
     });
 
